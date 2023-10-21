@@ -1,5 +1,4 @@
-function Addresses() {
-  var spamID = [
+const spamAddresses = [
   "newsletter@mailer.indiatricks.in",
   "newsletter@em.socialtech.in",
   "newsletter@mc.bloggerati.in",
@@ -18,5 +17,3 @@ function Addresses() {
   "info@thesupermails.com",
   "alert@ed.businessleague.in"
   ];
-  return(spamID);
-}
