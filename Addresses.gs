@@ -14,6 +14,8 @@ const spamAddresses = [
   "info@basictexture.com",
   "newsletter@et.rightsofemployees.com",
   "update@em.mailzway.in",
+  "info@host.discountwalas.com",
   "info@thesupermails.com",
-  "alert@ed.businessleague.in"
+  "alert@ed.businessleague.in",
+  "newsletter@em.discountwalas.com"
   ];
