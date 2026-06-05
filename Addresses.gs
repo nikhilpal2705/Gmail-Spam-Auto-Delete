@@ -18,4 +18,12 @@ const spamAddresses = [
   "info@thesupermails.com",
   "alert@ed.businessleague.in",
   "newsletter@em.discountwalas.com"
-  ];
+];
+
+const spamDomains = [
+  "thesupermails.com",
+  "businessleague.in",
+  "discountwalas.com",
+  "spf.securedomain.jp",
+  "travelomama.com"
+];
