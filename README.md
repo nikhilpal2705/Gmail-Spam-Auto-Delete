@@ -2,23 +2,21 @@
 
 A small Google Apps Script project that permanently deletes spam messages from specific senders.
 
-The script scans your Gmail spam folder, checks each message sender against a configured block list, labels matching threads as `BLOCKED`, moves them out of spam, and then permanently deletes the matching messages using the Gmail API.
+The script scans your Gmail spam folder, checks each message sender against a configured block list, and permanently deletes only the matching messages using the Gmail API.
 
 > Warning: this project uses permanent deletion. Deleted messages are removed through the Gmail API and are not moved to Trash first.
 
 ## Files
 
 - `Main.gs` - contains the main spam scanning and deletion logic.
-- `Addresses.gs` - contains the `spamAddresses` block list.
+- `Addresses.gs` - contains the `spamAddresses` and `spamDomains` block lists.
 
 ## How It Works
 
 1. `Main()` gets all threads currently in Gmail Spam.
 2. It checks every message sender in those threads.
-3. If the sender contains any address from `spamAddresses`, the thread is labeled `BLOCKED`.
-4. Matching threads are archived out of Spam.
-5. `deleteEmailByLabel()` permanently deletes messages with the `BLOCKED` label.
-6. The temporary `BLOCKED` label is removed.
+3. It matches exact sender addresses in `spamAddresses`, then domains in `spamDomains`.
+4. Matching messages are permanently deleted; other messages in the same thread are left untouched.
 
 ## Requirements
 
@@ -58,7 +56,7 @@ const spamAddresses = [
 ];
 ```
 
-Add one sender address per line. The script uses `includes()`, so a value can match part of the sender string. For example, `example.com` can match multiple senders from that domain.
+Add one complete sender address per line. Address entries are matched exactly and are case-insensitive.
 
 ### 4. Enable the Advanced Gmail Service
 
@@ -112,23 +110,13 @@ To run the cleanup automatically:
 6. Choose how often you want it to run, such as hourly or daily.
 7. Click **Save**.
 
-## Customization
-
-### Change the Temporary Label Name
-
-In `Main.gs`, update:
-
-```javascript
-const labelName = 'BLOCKED';
-```
-
 ### Match Domains Instead of Full Addresses
 
-Because sender matching uses `fromId.includes(address)`, you can block by domain:
+Add a domain to `spamDomains` to match every sender at that domain and its subdomains:
 
 ```javascript
-const spamAddresses = [
-  "@example.com",
+const spamDomains = [
+  "example.com",
   "mailer.example.net"
 ];
 ```
@@ -151,7 +139,7 @@ Enable the Advanced Gmail service in Apps Script and make sure the Gmail API is 
 ### The script runs but nothing is deleted
 
 - Confirm the target email is in the Spam folder.
-- Confirm the sender text contains one of the values in `spamAddresses`.
+- Confirm the full sender address is in `spamAddresses` or its domain is in `spamDomains`.
 - Run the script manually and check **Executions** in Apps Script for logs or errors.
 
 ### Authorization errors
